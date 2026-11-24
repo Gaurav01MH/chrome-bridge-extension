@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ChromeBridge</title>
+<style>
+:root{color-scheme:light;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+body{width:350px;margin:0;padding:16px;background:#f5f7fa;color:#17202c;font-size:13px;line-height:1.45}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
+.brand{display:flex;align-items:center;gap:9px}.mark{width:29px;height:29px;border-radius:9px;background:#18283d;color:white;display:grid;place-items:center;font-weight:750;font-size:15px}
+h1{font-size:16px;letter-spacing:-.35px;margin:0}.sub{font-size:10px;color:#788392;letter-spacing:.08em}
+.panel{background:#fff;border:1px solid #e4e9ef;border-radius:13px;padding:13px;margin:10px 0;box-shadow:0 2px 5px #18283d08}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
+h2{font-size:12px;font-weight:700;margin:0;color:#263446}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:30px;background:#eef1f5;color:#667283;font-size:11px;font-weight:650}
+.dot{width:7px;height:7px;border-radius:50%;background:#9aa4b1}.pill.ok{background:#e8f6ed;color:#176b39}.pill.ok .dot{background:#249653}.pill.warn{background:#fff4e8;color:#94530d}.pill.warn .dot{background:#d18a2d}
+.muted{color:#758091;font-size:11px;margin:0}
+.connection-main{font-size:14px;font-weight:700;margin:1px 0 2px}
+.site-current{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0 2px}
+.site-name{font-size:12px;font-weight:650;overflow-wrap:anywhere}
+button{font:600 11px system-ui;cursor:pointer;border:1px solid #d6dde6;border-radius:8px;padding:7px 9px;background:#f8fafc;color:#2d3a4b}
+button:hover:not(:disabled){background:#edf2f7}button:focus-visible{outline:3px solid #a7c7f5;outline-offset:2px}button:disabled{opacity:.65;cursor:default}
+.primary{background:#1d3048;border-color:#1d3048;color:#fff}.primary:hover:not(:disabled){background:#2d4664;color:#fff}
+.primary.success{background:#e9f6ee;border-color:#b8dfc5;color:#176b39}
+.site-list{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid #edf0f4}
+.site-list li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid #f0f2f5;font-size:11px}
+.site-list li:last-child{border-bottom:0;padding-bottom:0}.site-host{overflow-wrap:anywhere;color:#465365}
+.site-state{font-size:10px;color:#21804a;font-weight:650;white-space:nowrap}
+.action-row{display:flex;gap:7px;align-items:center;margin-top:9px}
+#siteAction{width:100%}
+.permission-line{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.permission-copy{font-size:12px;font-weight:650}
+.permission-desc{margin:5px 0 0}
+#debugger{white-space:nowrap}
+#pairingPanel[hidden],#siteAction[hidden],#sitesList[hidden],#changePairing[hidden],#secretFields[hidden]{display:none}
+input{width:100%;padding:9px 10px;border:1px solid #d6dde6;border-radius:8px;font:12px system-ui;margin:8px 0;background:#fff}
+#status{min-height:15px;margin:9px 2px 0;color:#687486;font-size:11px}
+footer{font-size:10px;color:#98a1ad;text-align:center;margin-top:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="mark">C</div><div><h1>ChromeBridge</h1><div class="sub">YOUR BROWSER BRIDGE</div></div></div>
+  <span id="connectionPill" class="pill"><span class="dot"></span><span id="connectionLabel">Checking</span></span>
+</header>
+
+<section class="panel">
+  <div class="connection-main" id="connectionHeadline">Checking bridge status…</div>
+  <p class="muted" id="connectionDetail">Checking the live local connection.</p>
+</section>
+
+<section class="panel">
+  <div class="section-head"><h2>SITE ACCESS</h2><span id="siteCount" class="muted">Checking…</span></div>
+  <p class="muted" id="currentSiteName">Checking the current tab…</p>
+  <div class="site-current">
+    <div><div class="site-name" id="currentSiteHost">—</div><div class="muted" id="currentSiteState">Checking permission…</div></div>
+    <span id="currentSiteBadge" class="pill"><span class="dot"></span><span>Checking</span></span>
+  </div>
+  <button id="siteAction" class="primary" type="button" hidden>Allow access to this site</button>
+  <ul id="sitesList" class="site-list" hidden></ul>
+  <p class="muted permission-desc" id="siteHelp">Allowed sites stay authorised. An access action appears only when the current site needs it.</p>
+</section>
+
+<section class="panel">
+  <div class="section-head"><h2>MOUSE-LEVEL CLICKS</h2><span id="debuggerBadge" class="pill"><span class="dot"></span><span>Checking</span></span></div>
+  <div class="permission-line"><div class="permission-copy" id="debuggerLabel">Checking Chrome permission…</div><button id="debugger" type="button" disabled>Checking…</button></div>
+  <p class="muted permission-desc" id="debuggerHelp">This is a required Chrome extension permission for mouse-level input. Approve it in Chrome after reloading the extension.</p>
+</section>
+
+<section class="panel" id="pairingPanel">
+  <div class="section-head"><h2>PAIRING</h2><span id="pairingBadge" class="pill"><span class="dot"></span><span>Checking</span></span></div>
+  <p class="muted" id="pairingText">Checking local pairing setup…</p>
+  
+  <div id="secretFields" hidden>
+    <input id="secret" type="password" autocomplete="off" spellcheck="false" placeholder="Paste pairing secret">
+    <button id="save" class="primary" type="button">Save pairing</button>
+  </div>
+</section>
+
+<div id="status" role="status" aria-live="polite"></div>
+<footer>Local-only · Your pairing secret stays in this Chrome profile</footer>
+<script src="popup.js"></script>
+</body>
+</html>
+
+[executed on device: LAPTOP-G72PTQJ6 (2b3fcac6-b6bc-499c-b844-33cea8460bff)]
