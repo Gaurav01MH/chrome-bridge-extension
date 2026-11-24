@@ -1,0 +1,8 @@
+# Local credentials and generated files
+config/
+*.log
+*.pid
+.DS_Store
+Thumbs.db
+
+[executed on device: LAPTOP-G72PTQJ6 (2b3fcac6-b6bc-499c-b844-33cea8460bff)]
