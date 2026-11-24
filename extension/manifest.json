@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "ChromeBridge",
+  "version": "0.1.0",
+  "description": "Connects your existing Chrome profile to the local ChromeBridge terminal.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxSXBb2YzJp0hsVmUFO884Sn4xrCVDt63MbTuCm6MyVw5SbFAJNFvEoYqTioKf8jQbaqBX2xBfr9YKgFiMCPOAbhq6i4ZGda6ADJaVYY9gYjhJKgtIUBjyhgL3heVoXsqfcN2sVcipLIZxnQzocgSCJj8q9I7uWVRh05Q4PkeC4fYAH8paFY5gKkUbZWwhODqrqy0Iah8+BrWojyUwLWqNY9YnQThYDHYm+um/65Ph6R1MUPd0BMFe3TyW1GLxEEZnI8JgMU+ZmPA86QQS+RnDUFUflQUGI05koVu6FKOF1ZvxaqIBAKev/Sap+do6ACNAWe58KJmQqfaKznHwGAQJQIDAQAB",
+  "permissions": ["tabs", "storage", "alarms", "debugger"],
+  "optional_permissions": ["scripting"],
+  "optional_host_permissions": ["http://*/*", "https://*/*"],
+  "background": {
+    "service_worker": "worker.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "ChromeBridge"
+  }
+}
+
+[executed on device: LAPTOP-G72PTQJ6 (2b3fcac6-b6bc-499c-b844-33cea8460bff)]
